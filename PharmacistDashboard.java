@@ -60,6 +60,11 @@ public class PharmacistDashboard extends javax.swing.JFrame {
 
         btnViewMedicine.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnViewMedicine.setText("View Medicine");
+        btnViewMedicine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewMedicineActionPerformed(evt);
+            }
+        });
 
         btnUpdateMedicine.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnUpdateMedicine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/update.png"))); // NOI18N
@@ -203,6 +208,10 @@ public class PharmacistDashboard extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnViewMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewMedicineActionPerformed
+        new ViewMedicine().setVisible(true);
+    }//GEN-LAST:event_btnViewMedicineActionPerformed
 
     /**
      * @param args the command line arguments
