@@ -50,8 +50,10 @@ public class UpdateUser extends javax.swing.JFrame {
         btnUpdate = new javax.swing.JButton();
         iconValidator = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -151,6 +153,14 @@ public class UpdateUser extends javax.swing.JFrame {
         iconValidator.setText("jLabel9");
         getContentPane().add(iconValidator, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 400, -1, -1));
         getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 1000, 10));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 0, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -287,6 +297,10 @@ public class UpdateUser extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -327,6 +341,7 @@ public class UpdateUser extends javax.swing.JFrame {
     private javax.swing.JButton btnUpdate;
     private com.toedter.calendar.JDateChooser dobChooser;
     private javax.swing.JLabel iconValidator;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

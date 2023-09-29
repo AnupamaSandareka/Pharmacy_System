@@ -10,6 +10,7 @@ import java.sql.*;
 public class PharmacistDashboard extends javax.swing.JFrame {
     
     private String userEmail = "";
+    private String userName = "";
     /**
      * Creates new form PharmacistDashboard
      */
@@ -20,6 +21,18 @@ public class PharmacistDashboard extends javax.swing.JFrame {
     public PharmacistDashboard(String tempEmail) {
         initComponents();
         userEmail = tempEmail;
+        try{
+            Connection con = ConnectionProvider.getConnection();
+            Statement statement = con.createStatement();
+            ResultSet result = statement.executeQuery("select * from appUser where email='"+userEmail+"'");
+            if(result.next()){
+                userName = result.getString("name");
+            }
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+
+        }
         setLocationRelativeTo(null);
     }
 
@@ -86,6 +99,11 @@ public class PharmacistDashboard extends javax.swing.JFrame {
 
         btnSellMedicine.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSellMedicine.setText("Sell Medicine");
+        btnSellMedicine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSellMedicineActionPerformed(evt);
+            }
+        });
 
         btnViewBill.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnViewBill.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/view.png"))); // NOI18N
@@ -212,6 +230,10 @@ public class PharmacistDashboard extends javax.swing.JFrame {
     private void btnViewMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewMedicineActionPerformed
         new ViewMedicine().setVisible(true);
     }//GEN-LAST:event_btnViewMedicineActionPerformed
+
+    private void btnSellMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellMedicineActionPerformed
+        new SellMedicine(userName).setVisible(true);
+    }//GEN-LAST:event_btnSellMedicineActionPerformed
 
     /**
      * @param args the command line arguments
