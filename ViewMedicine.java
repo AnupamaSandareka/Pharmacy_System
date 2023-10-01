@@ -15,6 +15,7 @@ public class ViewMedicine extends javax.swing.JFrame {
      */
     public ViewMedicine() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(173, 196, 206)); 
     }
 
     /**

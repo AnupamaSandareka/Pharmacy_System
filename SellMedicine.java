@@ -1,10 +1,22 @@
 
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
+import common.OpenPdf;
 import connection.ConnectionProvider;
+import connection.PharmacyUtils;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import connection.PharmacyUtils;
+import java.util.Date;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -22,12 +34,14 @@ public class SellMedicine extends javax.swing.JFrame {
     
     public SellMedicine() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(173, 196, 206)); 
     }
     
     public SellMedicine(String tempName) {
         initComponents();
         createrName = tempName;
         setLocationRelativeTo(null);
+        getContentPane().setBackground(new java.awt.Color(173, 196, 206)); 
     }
     
     private void medicineName(String nameOfUniqueId){
@@ -88,10 +102,10 @@ public class SellMedicine extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtTotalPrice = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        tableCart = new javax.swing.JTable();
+        btnAddToCart = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        lblFinalTotalPrice = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -162,13 +176,18 @@ public class SellMedicine extends javax.swing.JFrame {
         jLabel7.setText("No. of Units");
 
         txtNoOfUnit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtNoOfUnit.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNoOfUnitKeyReleased(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("Total Price");
 
         txtTotalPrice.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tableCart.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -176,19 +195,34 @@ public class SellMedicine extends javax.swing.JFrame {
                 "Medicine ID", "Name", "Company Name", "Price per Unit", "No. of Units", "Total Price"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        tableCart.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableCartMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tableCart);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setText("Add To Cart");
+        btnAddToCart.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAddToCart.setText("Add To Cart");
+        btnAddToCart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddToCartActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel9.setText("Rs : ");
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel10.setText("00.00");
+        lblFinalTotalPrice.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblFinalTotalPrice.setText("00.00");
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton2.setText("Purchase & Print");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -218,7 +252,7 @@ public class SellMedicine extends javax.swing.JFrame {
                                         .addGap(193, 193, 193)
                                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblFinalTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
                                         .addComponent(jButton2))
                                     .addComponent(jScrollPane2)
@@ -240,7 +274,7 @@ public class SellMedicine extends javax.swing.JFrame {
                                             .addComponent(txtTotalPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))))
                                 .addGap(26, 26, 26))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(btnAddToCart)
                                 .addGap(307, 307, 307)))))
                 .addContainerGap())
         );
@@ -282,7 +316,7 @@ public class SellMedicine extends javax.swing.JFrame {
                             .addComponent(txtComName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26)
-                        .addComponent(jButton1)
+                        .addComponent(btnAddToCart)
                         .addGap(37, 37, 37)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -300,7 +334,7 @@ public class SellMedicine extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel9)
-                        .addComponent(jLabel10))
+                        .addComponent(lblFinalTotalPrice))
                     .addComponent(jButton2))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
@@ -318,7 +352,7 @@ public class SellMedicine extends javax.swing.JFrame {
         txtMedicineID.setEditable(false);
         txtName.setEditable(false);
         txtComName.setEditable(false);
-        txtNoOfUnit.setEditable(false);
+        //txtNoOfUnit.setEditable(false);
         txtPricePerUnit.setEditable(false);
         txtTotalPrice.setEditable(false);
     }//GEN-LAST:event_formComponentShown
@@ -330,8 +364,191 @@ public class SellMedicine extends javax.swing.JFrame {
 
     private void medicineTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medicineTableMouseClicked
         int index = medicineTable.getSelectedRow();
+        TableModel model = medicineTable.getModel();
+        String nameOfUniqueId = model.getValueAt(index, 0).toString();
         
+        String uniqueId[] = nameOfUniqueId.split("-", 0);
+        try{
+            Connection con = ConnectionProvider.getConnection();
+            Statement st = con.createStatement();
+            ResultSet result = st.executeQuery("select * from medicine where uniqueId='"+uniqueId[0]+"'");
+            while(result.next()){
+                txtMedicineID.setText(uniqueId[0]);
+                txtName.setText(result.getString("name"));
+                txtComName.setText(result.getString("companyName"));
+                txtPricePerUnit.setText(result.getString("price"));
+                txtNoOfUnit.setText("");
+                txtTotalPrice.setText("");
+            }
+            
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }//GEN-LAST:event_medicineTableMouseClicked
+
+    private void txtNoOfUnitKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoOfUnitKeyReleased
+        String noOfUnits = txtNoOfUnit.getText();
+        if(!noOfUnits.equals("")){
+            String price = txtPricePerUnit.getText();
+            if(!noOfUnits.matches(numberPattern)){
+                JOptionPane.showMessageDialog(null, "Number of unit field is invalid");
+            }
+            int totalPrice = Integer.parseInt(noOfUnits) * Integer.parseInt(price);
+            txtTotalPrice.setText(String.valueOf(totalPrice));
+        }
+        else{
+            txtTotalPrice.setText("");
+        }
+    }//GEN-LAST:event_txtNoOfUnitKeyReleased
+
+    private void btnAddToCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToCartActionPerformed
+        String noOfUnits = txtNoOfUnit.getText();
+        String uniqueId = txtMedicineID.getText();
+        
+        if(!noOfUnits.equals("") && !uniqueId.equals("")){
+            String name = txtName.getText();
+            String comName = txtComName.getText();
+            String pricePerUnit = txtPricePerUnit.getText();
+            String totalPrice = txtTotalPrice.getText();
+            int checkStock = 0;
+            int checkMedicineAlreadyExistInCart = 0;
+            
+            try{
+               Connection con = ConnectionProvider.getConnection();
+               Statement st = con.createStatement();
+               ResultSet result = st.executeQuery("select * from medicine where uniqueId='"+uniqueId+"'");
+               while(result.next()){
+                   if(result.getInt("quantity") >= Integer.parseInt(noOfUnits)){
+                       checkStock = 1;
+                   }
+                   else{
+                       JOptionPane.showMessageDialog(null, "Medicine is out of stock. Only "+result.getInt("quantity")+" left");
+                   }
+                   
+                   if(checkStock == 1){
+                       DefaultTableModel dtm = (DefaultTableModel) tableCart.getModel();
+                       if(tableCart.getRowCount() != 0){
+                           for(int i=0; i<tableCart.getRowCount(); i++ ){
+                               if(Integer.parseInt(dtm.getValueAt(i, 0).toString()) == Integer.parseInt(uniqueId)){
+                                   checkMedicineAlreadyExistInCart = 1;
+                                   JOptionPane.showMessageDialog(null, "Medicine already exist in cart.");
+                               }
+                           }
+                       }
+                       
+                       if(checkMedicineAlreadyExistInCart == 0){
+                           dtm.addRow(new Object[] {uniqueId,name,comName,pricePerUnit,noOfUnits,totalPrice});
+                           finalTotalPrice = finalTotalPrice + Integer.parseInt(totalPrice);
+                           lblFinalTotalPrice.setText(String.valueOf(finalTotalPrice));
+                           JOptionPane.showMessageDialog(null,"Added to the cart successfully");
+                       }
+                       clearMedicineFields();
+                   }
+               }
+            }
+            catch(Exception ex){
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(null,"Nunber of unit and Medicine ID fields is required");
+        }
+    }//GEN-LAST:event_btnAddToCartActionPerformed
+
+    private void tableCartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCartMouseClicked
+        int index = tableCart.getSelectedRow();
+        int a = JOptionPane.showConfirmDialog(null,"Do you want to remove this medicine from cart?","Select",JOptionPane.YES_NO_OPTION);
+        if(a==0){
+            TableModel model = tableCart.getModel();
+            String total = model.getValueAt(index,5).toString();
+            finalTotalPrice = finalTotalPrice - Integer.parseInt(total);
+            lblFinalTotalPrice.setText(String.valueOf(finalTotalPrice));
+            ((DefaultTableModel) tableCart.getModel()).removeRow(index);
+        }
+    }//GEN-LAST:event_tableCartMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(finalTotalPrice != 0){
+            billId = getUniqueId("Bill-");
+            DefaultTableModel dtm = (DefaultTableModel) tableCart.getModel();
+            if(tableCart.getRowCount() != 0){
+                for(int i=0; i<tableCart.getRowCount(); i++){
+                    try{
+                        Connection con = ConnectionProvider.getConnection();
+                        Statement st = con.createStatement();
+                        st.executeUpdate("update medicine set quantity=quantity-"+Integer.valueOf(dtm.getValueAt(i, 4).toString())+" where uniqueId="+dtm.getValueAt(i, 0));
+                    }
+                    catch(Exception ex){
+                        JOptionPane.showMessageDialog(null, ex);
+                    }
+                }
+            }
+            try{
+                SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                Connection con = ConnectionProvider.getConnection();
+                PreparedStatement pst = con.prepareStatement("insert into bill(billId,billDate,totalPaid,generatedBy) values(?,?,?,?)");
+                pst.setString(1,billId);
+                pst.setString(2, myFormat.format(cal.getTime()));
+                pst.setString(3, String.valueOf(finalTotalPrice));
+                pst.setString(4, createrName);
+                pst.executeUpdate();
+            }
+            catch(Exception ex){
+                JOptionPane.showMessageDialog(null, ex);
+            }
+            
+            //create bill pdf
+            com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
+            try{
+                PdfWriter.getInstance(doc, new FileOutputStream(PharmacyUtils.billPath+""+billId+".pdf"));
+                doc.open();
+                Paragraph pharmacyName = new Paragraph("                                                     Pharmacy Management System\n");
+                doc.add(pharmacyName);
+                Paragraph starLine = new Paragraph("***********************************************************************************************************");
+                doc.add(starLine);
+                Paragraph details = new Paragraph("\tBill ID: "+billId+"\nDate: "+new Date()+"\nTotal Paid: "+finalTotalPrice);
+                doc.add(details);
+                doc.add(starLine);
+                PdfPTable tb1 = new PdfPTable(6);
+                tb1.addCell("Medicine ID");
+                tb1.addCell("Name");
+                tb1.addCell("Company Name");
+                tb1.addCell("Price per Unit");
+                tb1.addCell("Number of Units");
+                tb1.addCell("Sub Total Price");
+                for(int i=0; i<tableCart.getRowCount(); i++){
+                    String a = tableCart.getValueAt(i, 0).toString();
+                    String b = tableCart.getValueAt(i, 1).toString();
+                    String c = tableCart.getValueAt(i, 2).toString();
+                    String d = tableCart.getValueAt(i, 3).toString();
+                    String e = tableCart.getValueAt(i, 4).toString();
+                    String f = tableCart.getValueAt(i, 5).toString();
+                    tb1.addCell(a);
+                    tb1.addCell(b);
+                    tb1.addCell(c);
+                    tb1.addCell(d);
+                    tb1.addCell(e);
+                    tb1.addCell(f);
+                }
+                doc.add(tb1);
+                doc.add(starLine);
+                Paragraph msg = new Paragraph("Thank you. Come Again!");
+                doc.add(msg);
+                OpenPdf.openById(String.valueOf(billId));
+            }
+            catch(Exception ex){
+                JOptionPane.showMessageDialog(null, ex);
+            }
+            doc.close();
+            setVisible(false);
+            new SellMedicine(createrName).setVisible(true);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Please add medicine to cart.");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     /**
@@ -370,11 +587,10 @@ public class SellMedicine extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddToCart;
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -386,8 +602,9 @@ public class SellMedicine extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JLabel lblFinalTotalPrice;
     private javax.swing.JTable medicineTable;
+    private javax.swing.JTable tableCart;
     private javax.swing.JTextField txtComName;
     private javax.swing.JTextField txtMedicineID;
     private javax.swing.JTextField txtName;

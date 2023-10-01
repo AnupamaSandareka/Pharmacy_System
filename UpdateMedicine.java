@@ -17,6 +17,7 @@ public class UpdateMedicine extends javax.swing.JFrame {
      */
     public UpdateMedicine() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(173, 196, 206)); 
     }
 
     /**
@@ -252,7 +253,7 @@ public class UpdateMedicine extends javax.swing.JFrame {
         else{
             try{
                 Connection con = ConnectionProvider.getConnection();
-                PreparedStatement pst = con.prepareStatement("insert into medicine(uniqueId,name,companyName, price, quantity, expdate) values (?,?,?,?,?,?)");
+                PreparedStatement pst = con.prepareStatement("update medicine set uniqueId=?, name=?, companyName=?, price=?, quantity=?, expdate=? where uniqueId='"+uniqueId+"'");
                 pst.setString(1, uniqueId);
                 pst.setString(2, name);
                 pst.setString(3, companyName);
@@ -260,7 +261,7 @@ public class UpdateMedicine extends javax.swing.JFrame {
                 pst.setString(5, qty);
                 pst.setString(6, expdate);
                 pst.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Medicine saved successfully!");
+                JOptionPane.showMessageDialog(null, "Medicine updated successfully!");
                 setVisible(false);
                 new UpdateMedicine().setVisible(true);
             }

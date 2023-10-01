@@ -16,10 +16,12 @@ public class AdminDashboard extends javax.swing.JFrame {
      */
     public AdminDashboard() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(102, 32, 73)); 
     }
     
     public AdminDashboard(String tempUserEmail) {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(102, 32, 73)); 
         userEmail = tempUserEmail;
         setLocationRelativeTo(null);
     }
@@ -52,6 +54,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 102));
         jLabel1.setText("Dashboard");
 
         btnAddUser.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N

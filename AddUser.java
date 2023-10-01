@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AddUser extends javax.swing.JFrame {
-    public String emailPattern = "^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+$";
+    public String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     public String mobieNumberPattern = "^[0-9]+&";
     public int checkEmail=0;
     /**
@@ -18,6 +18,7 @@ public class AddUser extends javax.swing.JFrame {
      */
     public AddUser() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(162, 205, 176)); 
     }
 
     /**

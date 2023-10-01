@@ -16,10 +16,12 @@ public class PharmacistDashboard extends javax.swing.JFrame {
      */
     public PharmacistDashboard() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(18, 72, 107)); 
     }
     
     public PharmacistDashboard(String tempEmail) {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(18, 72, 107)); 
         userEmail = tempEmail;
         try{
             Connection con = ConnectionProvider.getConnection();
@@ -58,12 +60,15 @@ public class PharmacistDashboard extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(204, 255, 204));
         setUndecorated(true);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 102));
         jLabel1.setText("Dashboard");
 
         btnAddMedicine.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnAddMedicine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/medicine.png"))); // NOI18N
         btnAddMedicine.setText("Add Medicine");
         btnAddMedicine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,6 +77,7 @@ public class PharmacistDashboard extends javax.swing.JFrame {
         });
 
         btnViewMedicine.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnViewMedicine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewMed.png"))); // NOI18N
         btnViewMedicine.setText("View Medicine");
         btnViewMedicine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,6 +104,7 @@ public class PharmacistDashboard extends javax.swing.JFrame {
         });
 
         btnSellMedicine.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnSellMedicine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hand.png"))); // NOI18N
         btnSellMedicine.setText("Sell Medicine");
         btnSellMedicine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,6 +115,11 @@ public class PharmacistDashboard extends javax.swing.JFrame {
         btnViewBill.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnViewBill.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/view.png"))); // NOI18N
         btnViewBill.setText("View Bill");
+        btnViewBill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewBillActionPerformed(evt);
+            }
+        });
 
         btnExit.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.png"))); // NOI18N
@@ -200,7 +212,7 @@ public class PharmacistDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddMedicineActionPerformed
 
     private void btnUpdateMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateMedicineActionPerformed
-        // TODO add your handling code here:
+        new UpdateMedicine().setVisible(true);
     }//GEN-LAST:event_btnUpdateMedicineActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
@@ -234,6 +246,10 @@ public class PharmacistDashboard extends javax.swing.JFrame {
     private void btnSellMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellMedicineActionPerformed
         new SellMedicine(userName).setVisible(true);
     }//GEN-LAST:event_btnSellMedicineActionPerformed
+
+    private void btnViewBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBillActionPerformed
+        new ViewBill().setVisible(true);
+    }//GEN-LAST:event_btnViewBillActionPerformed
 
     /**
      * @param args the command line arguments

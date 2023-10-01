@@ -21,6 +21,7 @@ public class AddMedicine extends javax.swing.JFrame {
     public AddMedicine() {
         initComponents();
         setLocationRelativeTo(null);
+        getContentPane().setBackground(new java.awt.Color(173, 196, 206)); 
     }
 
     /**

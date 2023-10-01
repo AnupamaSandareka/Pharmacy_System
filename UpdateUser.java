@@ -11,13 +11,14 @@ import java.util.Date;
 
 public class UpdateUser extends javax.swing.JFrame {
     
-    private String emailPattern = "^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+$";
+    public String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private String mobieNumberPattern = "^[0-9]+&";
     /**
      * Creates new form UpdateUser
      */
     public UpdateUser() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(162, 205, 176)); 
         setLocationRelativeTo(null);
     }
 
@@ -149,8 +150,6 @@ public class UpdateUser extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 440, -1, -1));
-
-        iconValidator.setText("jLabel9");
         getContentPane().add(iconValidator, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 400, -1, -1));
         getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 1000, 10));
 

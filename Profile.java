@@ -18,10 +18,12 @@ public class Profile extends javax.swing.JFrame {
      */
     public Profile() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(162, 205, 176)); 
     }
     
     public Profile(String tempEmail) {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(162, 205, 176)); 
         userEmail = tempEmail;
         setLocationRelativeTo(null);
     }
@@ -100,7 +102,7 @@ public class Profile extends javax.swing.JFrame {
 
         txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        jLabel7.setText("Profile pic");
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/man.png"))); // NOI18N
 
         btnUpdate.setText("Update");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -108,8 +110,6 @@ public class Profile extends javax.swing.JFrame {
                 btnUpdateActionPerformed(evt);
             }
         });
-
-        iconValidator.setText("jLabel2");
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -189,7 +189,7 @@ public class Profile extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
